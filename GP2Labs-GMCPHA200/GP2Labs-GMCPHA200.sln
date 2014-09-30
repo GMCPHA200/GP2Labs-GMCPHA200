@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GP2Labs-GMCPHA200", "GP2Labs-GMCPHA200\GP2Labs-GMCPHA200.vcxproj", "{B8CED281-A0B6-4111-BA78-797F8B6D3783}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GP2Labs-GMCPHA200", "GP2Labs-GMCPHA200\GP2Labs-GMCPHA200.vcxproj", "{F21BF35E-CDE2-47FA-932E-B3CCD679F4E9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B8CED281-A0B6-4111-BA78-797F8B6D3783}.Debug|Win32.ActiveCfg = Debug|Win32
-		{B8CED281-A0B6-4111-BA78-797F8B6D3783}.Debug|Win32.Build.0 = Debug|Win32
-		{B8CED281-A0B6-4111-BA78-797F8B6D3783}.Release|Win32.ActiveCfg = Release|Win32
-		{B8CED281-A0B6-4111-BA78-797F8B6D3783}.Release|Win32.Build.0 = Release|Win32
+		{F21BF35E-CDE2-47FA-932E-B3CCD679F4E9}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F21BF35E-CDE2-47FA-932E-B3CCD679F4E9}.Debug|Win32.Build.0 = Debug|Win32
+		{F21BF35E-CDE2-47FA-932E-B3CCD679F4E9}.Release|Win32.ActiveCfg = Release|Win32
+		{F21BF35E-CDE2-47FA-932E-B3CCD679F4E9}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
