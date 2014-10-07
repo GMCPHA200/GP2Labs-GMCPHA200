@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{F21BF35E-CDE2-47FA-932E-B3CCD679F4E9}</ProjectGuid>
+    <ProjectGuid>{A88E9D7D-2B2D-45E1-B5B1-CA6C47B8E5CD}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>GP2LabsGMCPHA200</RootNamespace>
   </PropertyGroup>
@@ -76,7 +76,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\main.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
