@@ -58,7 +58,7 @@ void InitWindow(int width, int height, bool fullscreen)
 void CleanUp()
 {
 	glDeleteBuffers(1, &triangleVBO);
-	SDL_GL_DeleteContext(glcontext); x
+	SDL_GL_DeleteContext(glcontext); 
 		SDL_DestroyWindow(window);
 	SDL_Quit();
 }
