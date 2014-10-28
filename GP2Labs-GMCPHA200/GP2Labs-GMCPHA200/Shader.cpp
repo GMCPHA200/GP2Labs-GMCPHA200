@@ -17,14 +17,14 @@ GLuint loadShaderFromMemory(const char * pMem, SHADER_TYPE shaderType)
 //Load  Shader  from  File
 GLuint  loadShaderFromFile(const  std::string&  filename, SHADER_TYPE  shaderType)
 {
-	std::string
-		fileContents;
+	std::string fileContents;
 	std::ifstream  file;
 	file.open(filename.c_str(), std::ios::in);
 	if (!file)
 	{
 		return  0;
 	}
+
 	//calculate  file  size
 	if (file.good())
 	{
@@ -60,6 +60,28 @@ bool checkForCompilerErrors(GLuint shaderProgram)
 		std::cout << "Shader not compiled " << infoLog << std::endl;
 		//We don't need the shader anymore.
 		glDeleteShader(shaderProgram);
+		return true;
+	}
+	return false;
+}
+
+bool checkForLinkErrors(GLuint program)
+{
+	GLint isLinked = 0;
+	glGetProgramiv(program, GL_LINK_STATUS, &isLinked);
+	if(isLinked	== GL_FALSE)
+	{
+		GLint maxLength	= 0;
+		glGetProgramiv(program, GL_INFO_LOG_LENGTH, &maxLength);
+
+		//The maxLength includes the NULL character
+		std::string infoLog;
+		glGetShaderInfoLog(program, maxLength, &maxLength, &infoLog[0]);
+
+		std::cout << "Shader not linked" << infoLog << std::endl;
+
+		//We don't need the shader anymore.
+		glDeleteProgram(program);
 		return true;
 	}
 	return false;

@@ -9,14 +9,26 @@
 #include <SDL_opengl.h>
 #include <gl\GLU.h>
 
+//maths headers
+#include <glm/glm.hpp>
+using glm::mat4;
+using glm::vec3;
+
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
+#include "Shader.h"
 #include "Vertex.h"
+#include "Texture.h"
+
 
 #ifdef _DEBUG && WIN32
-const std::string ASSET_PATH ="../assets";
+const std::string ASSET_PATH = "../assets";
 #else
 const std::string ASSET_PATH = "assets";
 #endif
 const std::string SHADER_PATH = "/shaders";
+const std::string TEXTURE_PATH = "/textures";
 
 
 //Global variables go here
@@ -28,6 +40,8 @@ SDL_Window * window;
 const int WINDOW_WIDTH = 640;
 const int WINDOW_HEIGHT = 480;
 
+GLuint shaderProgram = 0;
+
 bool running = true;
 
 //SDL GL Context
@@ -35,31 +49,23 @@ SDL_GLContext glcontext = NULL;
 
 Vertex triangleData[] = {
 	//Front
-	{-0.5f, 0.5f, 0.5f,
-	1.0f, 0.0f, 1.0f, 1.0f },// Top Left
+	{vec3(-0.5f, 0.5f, 0.5f), vec2(0.0f, 0.0f), vec4(1.0f, 0.0f, 1.0f, 1.0f)},// Top Left
 
-	{-0.5f, -0.5f, 0.5f,
-	1.0f, 1.0f, 0.0f, 1.0f },// Bottom Left
+	{ vec3(-0.5f, -0.5f, 0.5f), vec2(0.0f, 1.0f), vec4(1.0f, 1.0f, 0.0f, 1.0f)},// Bottom Left
 
-	{ 0.5f, -0.5f, 0.5f,
-	0.0f, 1.0f, 1.0f, 1.0f }, //Bottom Right
+	{ vec3(0.5f, -0.5f, 0.5f), vec2(1.0f, 1.0f), vec4(0.0f, 1.0f, 1.0f, 1.0f)}, //Bottom Right
 
-	{ 0.5f, 0.5f, 0.5f,
-	1.0f, 0.0f, 1.0f, 1.0f },// Top Right
+	{ vec3(0.5f, 0.5f, 0.5f), vec2(1.0f, 0.0f), vec4(1.0f, 0.0f, 1.0f, 1.0f)},// Top Right
 
 
 	//Back
-	{-0.5f, 0.5f, -0.5f,
-	1.0f, 0.0f, 1.0f, 1.0f },// Top Left
+	{vec3(-0.5f, 0.5f, -0.5f), vec2(0.0f, 0.0f), vec4(1.0f, 0.0f, 1.0f, 1.0f)},// Top Left
 
-	{-0.5f, -0.5f, -0.5f,
-	1.0f, 1.0f, 0.0f, 1.0f },// Bottom Left
+	{vec3(-0.5f, -0.5f, -0.5f), vec2(0.0f, 1.0f), vec4(1.0f, 1.0f, 0.0f, 1.0f)},// Bottom Left
 
-	{0.5f,-0.5f, -0.5f,
-	0.0f, 1.0f, 1.0f, 1.0f }, //Bottom Right
+	{vec3(0.5f, -0.5f, -0.5f), vec2(1.0f, 1.0f), vec4(0.0f, 1.0f, 1.0f, 1.0f)}, //Bottom Right
 
-	{0.5f, 0.5f, -0.5f,
-	1.0f, 0.0f, 1.0f, 1.0f },// Top Right
+	{vec3(0.5f, 0.5f, -0.5f), vec2(1.0f, 0.0f), vec4(1.0f, 0.0f, 1.0f, 1.0f)},// Top Right
 };
 
 GLuint indices[] = {
@@ -87,6 +93,15 @@ GLuint triangleVBO;
 
 GLuint triangleEBO;
 
+GLuint VAO;
+
+//matrices
+mat4 viewMatrix;
+mat4 projMatrix;
+mat4 worldMatrix;
+
+GLuint texture = 0;
+
 
 //Global functions 
 
@@ -107,7 +122,10 @@ void InitWindow(int width, int height, bool fullscreen)
 //Used to cleanup once we exit
 void CleanUp()
 {
+	glDeleteTextures(1, &texture);
+	glDeleteProgram(shaderProgram);
 	glDeleteBuffers(1, &triangleEBO);
+	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &triangleVBO);
 	SDL_GL_DeleteContext(glcontext); 
 		SDL_DestroyWindow(window);
@@ -184,6 +202,10 @@ void setViewport(int width, int height)
 
 void initGeometry()
 {
+
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
+
 	//Create buffer
 	glGenBuffers(1, &triangleVBO);
 
@@ -201,13 +223,70 @@ void initGeometry()
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices,	GL_STATIC_DRAW);
 }
 
+void createShader()
+{
+	GLuint vertexShaderProgram = 0;
+	std::string vsPath = ASSET_PATH + SHADER_PATH + "/textureVS.glsl";
+	vertexShaderProgram = loadShaderFromFile(vsPath, VERTEX_SHADER);
+
+	GLuint fragmentShaderProgram = 0;
+	std::string fsPath = ASSET_PATH + SHADER_PATH + "/textureFS.glsl";
+	fragmentShaderProgram = loadShaderFromFile(fsPath, FRAGMENT_SHADER);
+
+	shaderProgram = glCreateProgram();
+	glAttachShader(shaderProgram, vertexShaderProgram);
+	glAttachShader(shaderProgram, fragmentShaderProgram);
+	glLinkProgram(shaderProgram);
+	checkForLinkErrors(shaderProgram);
+
+	//now we can delete the VS & FS Programs
+	glDeleteShader(vertexShaderProgram);
+	glDeleteShader(fragmentShaderProgram);
+
+	glBindAttribLocation(shaderProgram, 0, "vertexPosition");
+	glBindAttribLocation(shaderProgram, 1, "vertexTexCoords");
+	glBindAttribLocation(shaderProgram,	2, "vertexColour");
+}
+
+void createTexture()
+{
+	std::string texturePath = ASSET_PATH + TEXTURE_PATH + "/texture.png";
+	texture = loadTextureFromFile(texturePath);
+}
+
 //Function to draw
 void render()
 {
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glBindVertexArray(VAO);
+
 	glBindBuffer(GL_ARRAY_BUFFER, triangleVBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, triangleEBO);
+
+	glUseProgram(shaderProgram);
+
+	GLint texture0Location = glGetUniformLocation(shaderProgram, "texture0");
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texture);
+
+	glUniform1i(texture0Location, 0);
+
+	//Tell the shader that 0 is the position element
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), NULL);
+
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void**)sizeof(vec3));
+
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void**)sizeof(vec3) + sizeof(vec2));
+
+	GLint MVPLocation =	glGetUniformLocation(shaderProgram, "MVP");
+	mat4 MVP = projMatrix*viewMatrix*worldMatrix;
+	glUniformMatrix4fv(MVPLocation,	1, GL_FALSE, glm::value_ptr(MVP));
+
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	SDL_GL_SwapWindow(window);
 }
@@ -215,10 +294,12 @@ void render()
 //Function to update game state
 void update()
 {
-
+	projMatrix = glm::perspective(45.0f, (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT, 0.1f, 100.0f);
+	
+	viewMatrix = glm::lookAt(vec3(0.0f, 0.0f, 10.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+	
+	worldMatrix = glm::translate(mat4(1.0f), vec3(0.0f, 0.0f, 0.0f));
 }
-
-
 
 
 //Main Method - Entry Point 
@@ -241,8 +322,12 @@ int main(int argc, char * arg[])
 
 	initGeometry();
 
+	createTexture();
+
 	//Set our viewport
 	setViewport(WINDOW_WIDTH, WINDOW_HEIGHT);
+
+	createShader();
 
 
 	SDL_Event event;
