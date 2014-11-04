@@ -298,10 +298,31 @@ void initialise()
 	mainCamera->setCamera(c);
 	displayList.push_back(mainCamera);
 
+	GameObject* cube = new GameObject();
+	cube->setName("Cube");
+
+	Transform* transform = new Transform();
+	transform->setPosition(vec3(0.0f, 0.0f, 2.0f));
+	cube->setTransform(transform);
+
+	Material* material = new Material();
+	std::string vsPath = ASSET_PATH + SHADER_PATH + "/vertexColourVS.glsl";
+	std::string fsPath = ASSET_PATH + SHADER_PATH = "/vertexColourFS.glsl";
+	material->loadShader(vsPath, fsPath);
+	cube->setMaterial(material);
+
+	Mesh* mesh = new Mesh();
+	cube->setMesh(mesh);
+
+	displayList.push_back(cube);
 	for (auto iter = displayList.begin(); iter != displayList.end(); iter++)
 	{
 		(*iter)->init();
 	}
+
+	mesh->copyVertexData(8, sizeof(Vertex), (void**)triangleData);
+	mesh->copyIndexData(36, sizeof(int), (void**)indices);
+
 }
 
 //Function to draw
