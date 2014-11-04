@@ -12,7 +12,8 @@ GLuint loadTextureFromFile(const std::string& filename)
 		return textureID;
 	}
 
-	GLint nOfColors	= imageSurface->format->BytesPerPixel;
+	GLint nOfColors = imageSurface->format->BytesPerPixel;
+	//GLint nOfColors	= surface->format->BytesPerPixel;
 	GLenum textureFormat = GL_RGB;
 	if(nOfColors ==	4) //contains an alpha channel
 	{
@@ -23,7 +24,7 @@ GLuint loadTextureFromFile(const std::string& filename)
 	}
 	else if (nOfColors == 3) //no alpha channel
 	{
-		if(imageSurface->format->Rmask ­== 0x000000ff)
+		if(imageSurface->format->Rmask == 0x000000ff)
 			textureFormat = GL_RGB;
 		else
 			textureFormat= GL_BGR;
@@ -43,6 +44,7 @@ GLuint loadTextureFromFile(const std::string& filename)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	return textureID;
