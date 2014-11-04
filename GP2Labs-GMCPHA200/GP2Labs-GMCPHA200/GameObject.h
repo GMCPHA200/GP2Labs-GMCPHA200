@@ -31,7 +31,11 @@ public:
 	Camera* getCamera();
 	void setTransform(Transform* transform);
 	Transform* getTransform();
-
+	GameObject* getParent();
+	void setParent(GameObject* parent);
+	void addChild(GameObject* child);
+	int getChildCount();
+	GameObject* getChild(int index);
 protected:
 private:
 	std::string m_Name;
@@ -40,6 +44,8 @@ private:
 	Material* m_Material;
 	Camera* m_Camera;
 	Transform* m_Transform;
+	GameObject* m_Parent;
+	std::vector<GameObject*> m_Children;
 };
 
 #endif

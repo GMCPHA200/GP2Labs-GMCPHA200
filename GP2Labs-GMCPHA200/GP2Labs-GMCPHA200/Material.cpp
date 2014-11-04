@@ -36,6 +36,8 @@ bool Material::loadShader(const std::string& vertexFileName, const std::string& 
 	glBindAttribLocation(m_ShaderProgram, 0, "vertexPosition");
 	glBindAttribLocation(m_ShaderProgram, 1, "vertexTexCoords");
 	glBindAttribLocation(m_ShaderProgram, 2, "vertexColour");
+
+	return 0;
 }
 
 void Material::bind()

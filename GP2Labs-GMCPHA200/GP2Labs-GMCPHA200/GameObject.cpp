@@ -2,7 +2,7 @@
 
 GameObject::GameObject()
 {
-
+	m_Parent = NULL;
 }
 
 GameObject::~GameObject()
@@ -16,6 +16,11 @@ void GameObject::init()
 	{
 		(*iter)->init();
 	}
+
+	for (auto iter = m_Children.begin(); iter != m_Children.end(); iter++)
+	{
+		(*iter)->init();
+	}
 }
 
 void GameObject::update()
@@ -24,11 +29,21 @@ void GameObject::update()
 	{
 		(*iter)->update();
 	}
+
+	for (auto iter = m_Children.begin(); iter != m_Children.end(); iter++)
+	{
+		(*iter)->update();
+	}
 }
 
 void GameObject::render()
 {
 	for (auto iter = m_Components.begin(); iter != m_Components.end(); iter++)
+	{
+		(*iter)->render();
+	}
+
+	for (auto iter = m_Children.begin(); iter != m_Children.end(); iter++)
 	{
 		(*iter)->render();
 	}
@@ -52,6 +67,23 @@ void GameObject::destroy()
 		}
 	}
 	m_Components.clear();
+
+	auto i = m_Children.begin();
+	while (i != m_Children.end())
+	{
+		(*i)->destroy();
+		if ((*i))
+		{
+			delete(*i);
+			(*i) = NULL;
+			i = m_Children.erase(i);
+		}
+		else
+		{
+			i++;
+		}
+	}
+	m_Children.clear();
 }
 
 const std::string& GameObject::getName()
@@ -111,4 +143,36 @@ void GameObject::setTransform(Transform* transform)
 Transform* GameObject::getTransform()
 {
 	return m_Transform;
+}
+
+GameObject* GameObject::getParent()
+{
+	return m_Parent;
+}
+
+void GameObject::setParent(GameObject* parent)
+{
+	m_Parent = parent;
+}
+
+void GameObject::addChild(GameObject* child)
+{
+	m_Children.push_back(child);
+}
+
+int GameObject::getChildCount()
+{
+	return m_Children.size();
+}
+
+GameObject* GameObject::getChild(int index)
+{
+	if (index < 0 || index > m_Children.size())
+	{
+		return 0;
+	}
+	else
+	{
+		return m_Children[index];
+	}	
 }
