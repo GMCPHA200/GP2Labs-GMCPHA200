@@ -50,6 +50,8 @@ const int WINDOW_HEIGHT = 480;
 
 std::vector<GameObject*> displayList;
 
+GameObject* mainCamera;
+
 GLuint shaderProgram = 0;
 
 bool running = true;
@@ -285,6 +287,17 @@ void setViewport(int width, int height)
 
 void initialise()
 {
+	mainCamera = new GameObject();
+
+	Transform *t = new Transform();
+	t->setPosition(vec3(0.0f, 0.0f, 2.0f));
+	mainCamera->setTransform(t);
+	
+
+	Camera* c = new Camera();
+	mainCamera->setCamera(c);
+	displayList.push_back(mainCamera);
+
 	for (auto iter = displayList.begin(); iter != displayList.end(); iter++)
 	{
 		(*iter)->init();
@@ -340,8 +353,8 @@ void render()
 			currentMaterial->bind();
 
 			GLint MVPLocation = currentMaterial->getUniformLocation("MVP");
-			//will sort out once we have camera
-			mat4 MVP = mat4();
+			Camera* cam = mainCamera->getCamera();
+			mat4 MVP = cam->getProjectionMatrix()*cam->getViewMatrix()*currentTransform->getModel();
 			glUniformMatrix4fv(MVPLocation, 1, GL_FALSE, glm::value_ptr(MVP));
 
 			glDrawElements(GL_TRIANGLES, currentMesh->getIndexCount(), GL_UNSIGNED_INT, 0);
