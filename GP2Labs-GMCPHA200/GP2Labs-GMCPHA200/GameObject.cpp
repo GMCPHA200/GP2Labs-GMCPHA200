@@ -167,7 +167,7 @@ int GameObject::getChildCount()
 
 GameObject* GameObject::getChild(int index)
 {
-	if (index < 0 || index > m_Children.size())
+	if (index > m_Children.size())
 	{
 		return 0;
 	}

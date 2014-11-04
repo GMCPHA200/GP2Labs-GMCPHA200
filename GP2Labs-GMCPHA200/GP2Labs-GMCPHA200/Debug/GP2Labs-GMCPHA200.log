@@ -1,20 +1,19 @@
-﻿Build started 04/11/2014 10:05:43.
+﻿Build started 04/11/2014 10:49:33.
      1>Project "C:\Users\GMCPHA200\Desktop\GP2Labs-GMCPHA200\GP2Labs-GMCPHA200\GP2Labs-GMCPHA200\GP2Labs-GMCPHA200.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Specialised Applications\SDL2_image-2.0.0\include" /I"C:\Specialised Applications\glm" /I"C:\Specialised Applications\glew-1.11.0\include" /I"C:\Specialised Applications\SDL2\include" /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt GameObject.cpp Material.cpp
-         Material.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Specialised Applications\SDL2_image-2.0.0\include" /I"C:\Specialised Applications\glm" /I"C:\Specialised Applications\glew-1.11.0\include" /I"C:\Specialised Applications\SDL2\include" /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt GameObject.cpp
          GameObject.cpp
-     1>c:\users\gmcpha200\desktop\gp2labs-gmcpha200\gp2labs-gmcpha200\gp2labs-gmcpha200\gameobject.cpp(75): error C2664: 'void GameObject::addComponent(Component *)' : cannot convert argument 1 from 'Mesh *' to 'Component *'
+     1>c:\users\gmcpha200\desktop\gp2labs-gmcpha200\gp2labs-gmcpha200\gp2labs-gmcpha200\gameobject.cpp(107): error C2664: 'void GameObject::addComponent(Component *)' : cannot convert argument 1 from 'Mesh *' to 'Component *'
                  Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
-     1>c:\users\gmcpha200\desktop\gp2labs-gmcpha200\gp2labs-gmcpha200\gp2labs-gmcpha200\gameobject.cpp(86): error C2664: 'void GameObject::addComponent(Component *)' : cannot convert argument 1 from 'Material *' to 'Component *'
+     1>c:\users\gmcpha200\desktop\gp2labs-gmcpha200\gp2labs-gmcpha200\gp2labs-gmcpha200\gameobject.cpp(118): error C2664: 'void GameObject::addComponent(Component *)' : cannot convert argument 1 from 'Material *' to 'Component *'
                  Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
-     1>c:\users\gmcpha200\desktop\gp2labs-gmcpha200\gp2labs-gmcpha200\gp2labs-gmcpha200\gameobject.cpp(97): error C2664: 'void GameObject::addComponent(Component *)' : cannot convert argument 1 from 'Camera *' to 'Component *'
+     1>c:\users\gmcpha200\desktop\gp2labs-gmcpha200\gp2labs-gmcpha200\gp2labs-gmcpha200\gameobject.cpp(129): error C2664: 'void GameObject::addComponent(Component *)' : cannot convert argument 1 from 'Camera *' to 'Component *'
                  Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
-     1>c:\users\gmcpha200\desktop\gp2labs-gmcpha200\gp2labs-gmcpha200\gp2labs-gmcpha200\gameobject.cpp(108): error C2664: 'void GameObject::addComponent(Component *)' : cannot convert argument 1 from 'Transform *' to 'Component *'
+     1>c:\users\gmcpha200\desktop\gp2labs-gmcpha200\gp2labs-gmcpha200\gp2labs-gmcpha200\gameobject.cpp(140): error C2664: 'void GameObject::addComponent(Component *)' : cannot convert argument 1 from 'Transform *' to 'Component *'
                  Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
-         Generating Code...
+     1>c:\users\gmcpha200\desktop\gp2labs-gmcpha200\gp2labs-gmcpha200\gp2labs-gmcpha200\gameobject.cpp(170): warning C4018: '>' : signed/unsigned mismatch
      1>Done Building Project "C:\Users\GMCPHA200\Desktop\GP2Labs-GMCPHA200\GP2Labs-GMCPHA200\GP2Labs-GMCPHA200\GP2Labs-GMCPHA200.vcxproj" (Build target(s)) -- FAILED.
 
 Build FAILED.
 
-Time Elapsed 00:00:01.50
+Time Elapsed 00:00:00.63
